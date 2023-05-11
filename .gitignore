@@ -1,0 +1,9 @@
+.idea
+
+# server
+server/.yarn
+server/.pnp.*
+server/yarn.lock
+server/node_modules
+server/.idea
+server/static/*
