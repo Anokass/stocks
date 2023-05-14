@@ -1,7 +1,7 @@
 const Router = require("express");
 const portfolioController = require("../controllers/portfolioController");
 const authMiddleware = require("../middleware/authMiddleware");
-const checkSoldStockMiddleware = require("../middleware/checkSoldStockMiddleware")
+const checkSoldStockMiddleware = require("../middleware/checkSoldStockMiddleware");
 
 const router = new Router();
 

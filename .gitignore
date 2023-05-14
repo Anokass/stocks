@@ -1,5 +1,14 @@
 .idea
 
+# client
+client/dist
+client/.yarn
+client/.pnp.*
+client/yarn.lock
+client/node_modules
+client/.idea
+client/static/*
+
 # server
 server/.yarn
 server/.pnp.*
