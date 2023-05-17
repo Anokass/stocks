@@ -129,6 +129,7 @@ table > tbody > tr > td:last-child {
 
 .name > img {
     width: 48px;
+    border-radius: 50%;
 }
 
 table > thead > tr {

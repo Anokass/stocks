@@ -4,6 +4,7 @@ import PortfolioStocks from "../components/PortfolioStocks.vue";
 import { ref } from "vue";
 import LogoutIcon from "../components/icons/LogoutIcon.vue";
 import BackButton from "../components/BackButton.vue";
+import FooterComponent from "../components/FooterComponent.vue";
 
 const totalPrice = ref(0);
 

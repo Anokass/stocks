@@ -4,6 +4,7 @@ import StocksTable from "../components/StocksTable.vue";
 import AddIcon from "../components/icons/AddIcon.vue";
 import AddStockModal from "../components/AddStockModal.vue";
 import { store } from "../store/store";
+import FooterComponent from "../components/FooterComponent.vue";
 
 const role = localStorage.getItem("role");
 </script>
@@ -17,6 +18,7 @@ const role = localStorage.getItem("role");
         </div>
         <stocks-table />
         <add-stock-modal v-if="store.getters.getShowModal" />
+        <footer-component />
     </main>
 </template>
 

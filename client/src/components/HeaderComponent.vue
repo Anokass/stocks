@@ -17,10 +17,14 @@ const checkAuth = () => {
         <h1>
             <router-link to="/">investok.</router-link>
         </h1>
-        <router-link :to="checkAuth() ? '/profile' : '/auth'">
-            {{ login ? login : "Войти" }}
-            <profile-icon />
-        </router-link>
+
+        <div>
+            <router-link class="about" to="/about">О нас</router-link>
+            <router-link :to="checkAuth() ? '/profile' : '/auth'">
+                {{ login ? login : "Войти" }}
+                <profile-icon />
+            </router-link>
+        </div>
     </header>
 </template>
 
@@ -40,7 +44,12 @@ header > h1 > a {
     font-weight: 600;
 }
 
-header > a {
+header > div {
+    display: flex;
+    gap: 16px;
+}
+
+header > div > a {
     text-decoration: none;
     opacity: 0.5;
     transition: opacity 0.25s ease-in-out;
@@ -51,7 +60,7 @@ header > a {
     gap: 4px;
 }
 
-header > a:hover {
+header > div > a:hover {
     opacity: 1;
 }
 </style>
