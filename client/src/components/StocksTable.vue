@@ -2,16 +2,36 @@
 import axios from "axios";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import SortIcon from "./icons/SortIcon.vue";
+import DecIcon from "./icons/DecIcon.vue";
+import IncIcon from "./icons/IncIcon.vue";
 
 const router = useRouter();
 const state = reactive({
-    stocks: []
+    stocks: [
+        {
+            id: 1,
+            icon: "",
+            fullName: "",
+            shortName: "",
+            price: 0,
+            priceChangeForDay: 0,
+            priceChangeForYear: 0,
+            yieldOverSixMonth: 0,
+            sector: "",
+            description: ""
+        }
+    ],
+    initStocks: [],
+    sort: "",
+    sortBy: ""
 });
 
 axios
     .get(`${import.meta.env.VITE_API_ENDPOINT}/api/stock`)
     .then((res) => {
-        state.stocks = res.data;
+        state.stocks = res.data.map(({...stocks}) => ({...stocks}));
+        state.initStocks = res.data.map(({...stocks}) => ({...stocks}));
     })
     .catch((e) => console.error(e));
 
@@ -33,6 +53,39 @@ const setId = async (id) => {
     localStorage.setItem("showStock", id);
     await router.push("/stock");
 };
+
+const sort = (by) => {
+    console.log(state.initStocks)
+    if (by === "DAY") {
+        state.sortBy = by;
+
+        if (state.sort === "") {
+            state.sort = "DEC";
+            state.stocks.sort((a, b) => b.priceChangeForDay - a.priceChangeForDay);
+        } else if (state.sort === "DEC") {
+            state.sort = "INC";
+            state.stocks.sort((a, b) => a.priceChangeForDay - b.priceChangeForDay);
+        } else if (state.sort === "INC") {
+            state.sort = "";
+            state.sortBy = "";
+            state.stocks = state.initStocks.map(({...stocks}) => ({...stocks}));
+        }
+    } else if (by === "YEAR") {
+        state.sortBy = by;
+
+        if (state.sort === "") {
+            state.sort = "DEC";
+            state.stocks.sort((a, b) => b.priceChangeForYear - a.priceChangeForYear);
+        } else if (state.sort === "DEC") {
+            state.sort = "INC";
+            state.stocks.sort((a, b) => a.priceChangeForYear - b.priceChangeForYear);
+        } else if (state.sort === "INC") {
+            state.sort = "";
+            state.sortBy = "";
+            state.stocks = state.initStocks.map(({...stocks}) => ({...stocks}));
+        }
+    }
+};
 </script>
 
 <template>
@@ -41,8 +94,22 @@ const setId = async (id) => {
             <tr>
                 <th>Название</th>
                 <th>Цена акции</th>
-                <th>За день</th>
-                <th>За год</th>
+                <th class="sort" @click="sort('DAY')">
+                    <div>
+                        За день
+                        <SortIcon v-if="state.sortBy !== 'DAY'" />
+                        <DecIcon v-if="state.sort === 'DEC' && state.sortBy === 'DAY'" />
+                        <IncIcon v-if="state.sort === 'INC' && state.sortBy === 'DAY'" />
+                    </div>
+                </th>
+                <th @click="sort('YEAR')">
+                    <div>
+                        За год
+                        <SortIcon v-if="state.sortBy !== 'YEAR'" />
+                        <DecIcon v-if="state.sort === 'DEC' && state.sortBy === 'YEAR'" />
+                        <IncIcon v-if="state.sort === 'INC' && state.sortBy === 'YEAR'" />
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -92,6 +159,14 @@ table > thead > tr > th {
     color: #d8dee9;
     text-align: right;
     padding: 16px 0;
+    cursor: pointer;
+}
+
+table > thead > tr > th > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 table > thead > tr > th:first-child {
